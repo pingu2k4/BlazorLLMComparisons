@@ -1,9 +1,9 @@
 # AGENTS.md
 
-This repository is designed for repeated work by coding agents across multiple
-sessions. Continuity and reproducibility matter more than speed.
+This repository is used to compare coding agents across repeated attempts.
+Continuity, isolation, and reproducibility matter more than speed.
 
-You MUST follow the Work Diary and repo automation conventions below.
+You MUST follow the Work Diary rules and the repo boundaries below.
 
 ---
 
@@ -41,70 +41,71 @@ If anything conflicts with this file, `./.diary/README.md` wins.
 ## 2) Repo boundaries + isolation (hard)
 
 Each agent attempt will specify a folder name. You MUST:
-- put all new work for that attempt under: `./src/<folder-name>/` (`<folder-name>` will be specified in the prompt)
+- put all new work for that attempt under: `./src/<folder-name>/`
 - avoid modifying other parts of the repository
 
 Only allowed exceptions:
-- `./src/AppHost/` (Aspire integration)
 - `./BlazorLLMComparisons.slnx` (solution membership)
 - `./.diary/` (Work diary entries)
 
 ---
 
-## 3) Solution + Aspire integration (hard)
+## 3) Solution membership (hard)
 
-### Solution membership
 - The solution file is `./BlazorLLMComparisons.slnx`.
 - Every new project you create MUST be added to the solution.
 
-### Aspire AppHost
-- There is an existing Aspire AppHost project at `./src/AppHost/`.
-- You MUST register:
-  - every runnable project you add
-  - any resources you introduce (databases/caches/queues/etc.)
-  - project-to-project dependencies (e.g., UI depends on API, API depends on DB)
+---
 
-### HTTP endpoint registration conventions (hard)
-For any project that exposes an HTTP endpoint and is expected to be visited:
-- Use endpoint name `"http"` (not `"https"`)
-- In AppHost, set URL display text with:
-  `.WithUrlForEndpoint("http", url => { url.DisplayText = "..."; })`
+## 4) Project naming (hard)
 
-For any Blazor UI project:
-- In AppHost, it MUST include:
-  - `.WithExternalHttpEndpoints()`
-  - `.WithExplicitStart()`
+All projects you create MUST be prefixed with `<FOLDER>.`
+
+Examples (if `<FOLDER>` is `Foo`):
+- `Foo.Web`
+- `Foo.Api`
+- `Foo.Domain`
+- `Foo.Infrastructure`
+
+This rule applies to:
+- project names
+- `.csproj` file names
+- assembly names
+- root namespaces (where applicable)
 
 ---
 
-## 4) launchSettings.json rule (hard)
+## 5) Blazor rendering requirements (hard)
+
+If you build a Blazor UI:
+- It MUST be a Blazor Web App using Blazor **Auto** interactivity.
+- Every route/page must:
+  - render with **static SSR first** (prerendered HTML response)
+  - then hydrate to interactive (Server first, then transition to WASM when available)
+
+Do not disable prerendering.
+
+---
+
+## 6) launchSettings.json rule (hard)
 
 For every ASP.NET project you create:
 - `Properties/launchSettings.json` MUST contain ONLY an `"http"` profile.
 - No `"https"` profile anywhere.
-- applicationUrl MUST be `http://...` and use a stable dev-local hostname convention.
+- `applicationUrl` MUST be `http://localhost:<port>` (choose stable ports and document
+  them in your attempt README).
 
 ---
 
-## 5) Mandatory end-to-end verification using agent-browser (hard)
+## 7) Node tooling rule (hard)
 
-If you implement a web app, you MUST validate key flows using `agent-browser`
-while the app is running.
-
-Minimum expected commands:
-- `agent-browser open <url>`
-- `agent-browser snapshot -i`
-- `agent-browser click @eX`
-- `agent-browser fill @eX "text"`
-- `agent-browser wait --url "**/..."` and/or `agent-browser wait --text "..."`
-
-Tip: `agent-browser --help` shows the full command set.
-
-You must record what you tested and the outcome in the Work Diary.
+If you introduce any Node tooling or npm packages:
+- You MUST use `pnpm` for installation and scripts.
 
 ---
 
-## 6) Build cleanliness (hard)
+## 8) Build cleanliness + readiness (hard)
 
-Before declaring done:
-- The entire repository must build with ZERO warnings and ZERO errors.
+You MUST NOT stop until:
+- the entire repository builds with ZERO warnings and ZERO errors, and
+- the attempt is in a state that is ready for the testing stage to begin.

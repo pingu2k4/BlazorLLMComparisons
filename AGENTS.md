@@ -3,38 +3,7 @@
 This repository is used to compare coding agents across repeated attempts.
 Continuity, isolation, and reproducibility matter more than speed.
 
-You MUST follow the Work Diary rules and the repo boundaries below.
-
----
-
-## 1) Non-negotiable: Work Diary
-
-You MUST read and follow:
-
-- `./.diary/README.md`
-
-It is the source of truth for:
-- how to resume work safely
-- when/how to write diary entries
-- how to name the diary file from the current git branch
-
-### Session start (required)
-1) Read `./.diary/README.md`.
-2) Determine the current git branch name.
-3) Compute the diary filename per rules in `./.diary/README.md`.
-4) If the diary file exists, read it fully before doing any work.
-
-### During the session (required)
-After each **meaningful action** (code/config change, key decision, important command run,
-constraint/bug discovered, tasks created that affect next steps), update the diary.
-
-Do NOT write diary entries for minor intermediate edits.
-
-### Session end (required)
-If you performed any meaningful actions, ensure the diary is updated before stopping.
-“Next actions” must be accurate and actionable.
-
-If anything conflicts with this file, `./.diary/README.md` wins.
+You MUST follow the repo boundaries below.
 
 ---
 
@@ -46,7 +15,6 @@ Each agent attempt will specify a folder name. You MUST:
 
 Only allowed exceptions:
 - `./BlazorLLMComparisons.slnx` (solution membership)
-- `./.diary/` (Work diary entries)
 
 ---
 
